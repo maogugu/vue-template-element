@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>项目名</title>
+  <link rel="dns-prefetch" href="xfw-bscnym-test.oss-cn-hangzhou.aliyuncs.com" />
+  <meta charset="utf-8">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0, viewport-fit=cover" />
+  <script>
+    var globalLog = console.log;
+    var globalWarn = console.warn;
+    var globalError = console.error;
+    var IsDingBrowser = /dingtalk/.test(navigator.userAgent.toLowerCase())
+  </script>
+  <% for (let link of htmlWebpackPlugin.options.cdn.css) { %>
+  <link rel="stylesheet" href="<%= link %>"><% } %>
+  <% if (htmlWebpackPlugin.options.buildInfo.env === 'production') { %>
+  <% for (let src of htmlWebpackPlugin.options.cdn.js) { %><script src="<%= src %>"></script><% } %>
+  <% } %>
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1626394_o47rprzondf.css" />
+</head>
+
+<body>
+  <div id="app"></div>
+  <script>
+    function consoleTag(key, value) {
+      var baseStyle = 'font-family: sans-serif;font-weight: bold;font-size: 12px;padding:5px;';
+      var keyStyle = "color:#fff;background:#000;" + baseStyle + ";border-radius:4px 0 0 4px";
+      var valueStyle = "color:#000;background:#FF9900;" + baseStyle + ";border-radius:0 4px 4px 0";
+      globalLog("%c " + key + "%c" + value + " ", keyStyle, valueStyle);
+    }
+    consoleTag('Environment', '<%= htmlWebpackPlugin.options.buildInfo.env %>')
+    consoleTag('Version', '<%= htmlWebpackPlugin.options.buildInfo.appVersion %>')
+    consoleTag('Build Date', '<%= htmlWebpackPlugin.options.buildInfo.buildTime %>')
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,498 @@
+@charset "utf-8";
+@import './_variables.scss';
+@each $colorKey,
+$color in $colors {
+
+  // 字体颜色
+  .text-#{$colorKey} {
+    color: $color !important;
+  }
+
+  // 字体颜色透明度
+  @for $i from 1 to map-get($forLength,normal) {
+    .text-#{$colorKey}-#{$i} {
+      color: rgba($color, $i / 100) !important;
+    }
+  }
+
+  // hover颜色
+  .text-hover-#{$colorKey}:hover {
+    color: $color !important;
+  }
+
+  // hover 透明色
+  @for $i from 1 to map-get($forLength,percent) {
+    .text-hover-#{$colorKey}-#{$i}:hover {
+      color: rgba($color, $i / 100) !important;
+    }
+  }
+
+  // 背景颜色
+  .bg-#{$colorKey} {
+    background-color: $color !important;
+  }
+
+  @for $i from 1 to map-get($forLength,percent) {
+    .bg-#{$colorKey}-#{$i} {
+      background-color: rgba($color, $i / 100) !important;
+    }
+  }
+
+  // hover 背景色
+  .bg-hover-#{$colorKey}:hover {
+    background-color: $color !important;
+  }
+
+  @for $i from 1 to map-get($forLength,percent) {
+    .bg-hover-#{$colorKey}-#{$i}:hover {
+      background-color: rgba($color, $i / 100) !important;
+    }
+  }
+
+  // 边框颜色
+  .border-color-#{$colorKey} {
+    border-color: $color !important;
+  }
+
+  @for $i from 1 to map-get($forLength,percent) {
+    .border-color-#{$colorKey}-#{$i} {
+      border-color: rgba($color, $i / 100) !important;
+    }
+  }
+
+  .border-color-hover-#{$colorKey}:hover {
+    border-color: $color !important;
+  }
+
+  @for $i from 1 to map-get($forLength,percent) {
+    .border-color-hover-#{$colorKey}-#{$i}:hover {
+      border-color: rgba($color, $i / 100) !important;
+    }
+  }
+}
+
+// text align 字体对齐方式
+@each $var in (left, center, right) {
+  .text-#{$var} {
+    text-align: $var !important;
+  }
+}
+
+// 行内元素对齐方式
+@each $var in (middle, sub, baseline, top, bottom, text-bottom) {
+  .vertical-align-#{$var} {
+    vertical-align: $var !important;
+  }
+}
+
+// 字体粗细
+@each $var in (0, bold) {
+  .fw-#{$var} {
+    @if $var==0 {
+      font-weight: normal !important;
+    }
+
+    @if $var !=0 {
+      font-weight: #{$var} !important;
+    }
+  }
+}
+
+@for $i from 0 to map-get($forLength,percent) {
+  .flex-#{$i} {
+    flex: #{$i} !important;
+  }
+
+  .flex-shrink-#{$i} {
+    flex-shrink: $i;
+  }
+
+  .flex-grow-#{$i} {
+    flex-grow: $i;
+  }
+
+  @each $key,
+  $value in $unit-types {
+
+    // 边框圆角
+    .border-radius-#{$i}#{$key} {
+      border-radius: #{$i}#{$value} !important;
+    }
+
+    .fs-#{$i}#{$key} {
+      font-size: #{$i}#{$value} !important;
+    }
+
+    .border-#{$i}#{$key} {
+      border-width: #{$i}#{$value} !important;
+      border-style: solid;
+      border-color: black;
+    }
+
+    @each $spKey,
+    $spVal in $spacing-directions {
+
+      // border-t-1 
+      .border-#{$spKey}-#{$i}#{$key} {
+        border-width: 0 !important;
+        border-#{$spVal}-width:#{$i}#{$value} !important;
+        border-style: solid;
+        border-color: black;
+      }
+    }
+
+    .border-x-#{$i}#{$key} {
+      border-width: 0 #{$i}#{$value} !important;
+      border-style: solid;
+      border-color: black;
+    }
+
+    .border-y-#{$i}#{$key} {
+      border-width: #{$i}#{$value} 0 !important;
+      border-style: solid;
+      border-color: black;
+    }
+  }
+}
+
+// width, height border-radius flex
+@for $i from 0 to map-get($forLength,normal) {
+  // 数字循环
+
+  // z-index
+  .z-index-#{$i} {
+    z-index: $i !important;
+  }
+
+  @each $unitKey,
+  $unit in $unit-types {
+    // 字体间距
+    .letter-spacing-#{$i}#{$unitKey} {
+      letter-spacing:#{$i}#{$unit} !important;
+    }
+
+    // 单位循环
+    .lh-#{$i}#{$unitKey} {
+      line-height: #{$i}#{$unit} !important;
+    }
+
+    .w-#{$i}#{$unitKey} {
+      width: #{$i}#{$unit} !important;
+    }
+
+    .min-w-#{$i}#{$unitKey} {
+      min-width: #{$i}#{$unit} !important;
+    }
+
+    .max-w-#{$i}#{$unitKey} {
+      max-width: #{$i}#{$unit} !important;
+    }
+
+    .h-#{$i}#{$unitKey} {
+      height: #{$i}#{$unit} !important;
+    }
+
+    .min-h-#{$i}#{$unitKey} {
+     min-height: #{$i}#{$unit} !important;
+    }
+
+    .max-h-#{$i}#{$unitKey} {
+      max-height: #{$i}#{$unit} !important;
+     }
+
+    .square-#{$i}#{$unitKey} {
+      height: #{$i}#{$unit} !important;
+      width: #{$i}#{$unit} !important;
+    }
+  }
+}
+
+@for $i from map-get($forLength,minus) to 0 {
+  .z-index-m#{$i} {
+    z-index: $i !important;
+  }
+}
+// 多行省略
+@for $i from 1 to map-get($forLength,percent) {
+  .text-ellipsis-#{$i} {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: $i;
+    -webkit-box-orient: vertical;
+  }
+}
+
+@each $typeKey,
+$type in $spacing-types {
+
+  // 四向 内外边距
+  @each $unitKey,
+  $unit in $unit-types {
+    @for $i from 0 to map-get($forLength,normal) {
+      .#{$typeKey}-#{$i}#{$unitKey} {
+        #{$type}: #{$i}#{$unit} !important;
+      }
+    }
+    @for $i from map-get($forLength,minus) to 0 {
+      .#{$typeKey}-m#{$i}#{$unitKey} {
+        #{$type}: #{$i}#{$unit} !important;
+      }
+    }
+  }
+
+  // 双向 内外边距
+  @each $unitKey,
+  $unit in $unit-types {
+    @for $i from 0 to map-get($forLength,normal) {
+      .#{$typeKey}-x-#{$i}#{$unitKey} {
+        #{$type}-left: #{$i}#{$unit} !important;
+        #{$type}-right: #{$i}#{$unit} !important;
+      }
+      
+      .#{$typeKey}-y-#{$i}#{$unitKey} {
+        #{$type}-top: #{$i}#{$unit} !important;
+        #{$type}-bottom: #{$i}#{$unit} !important;
+      }
+    }
+    @for $i from map-get($forLength,minus) to 0 {
+      .#{$typeKey}-x-m#{$i}#{$unitKey} {
+        #{$type}-left: #{$i}#{$unit} !important;
+        #{$type}-right: #{$i}#{$unit} !important;
+      }
+      
+      .#{$typeKey}-y-m#{$i}#{$unitKey} {
+        #{$type}-top: #{$i}#{$unit} !important;
+        #{$type}-bottom: #{$i}#{$unit} !important;
+      }
+    }
+  }
+
+  // 单向内外边距
+  @each $unitKey,
+  $unit in $unit-types {
+
+    @each $directionKey,
+    $direction in $spacing-directions {
+      @for $i from 0 to map-get($forLength,normal) {
+        .#{$typeKey}-#{$directionKey}-#{$i}#{$unitKey} {
+          #{$type}-#{$direction}: #{$i}#{$unit} !important;
+        }
+      }
+      @for $i from map-get($forLength,minus) to 0 {
+        .#{$typeKey}-#{$directionKey}-m#{$i}#{$unitKey} {
+          #{$type}-#{$direction}: #{$i}#{$unit} !important;
+        }
+      }
+    }
+  }
+
+}
+
+// 定位  t-20 t-20p l-10vw
+@each $unitKey,
+$unit in $unit-types {
+
+  @each $directionKey,
+  $direction in $spacing-directions {
+    @for $i from 0 to map-get($forLength,normal) {
+      .#{$directionKey}-#{$i}#{$unitKey} {
+        #{$direction}:#{$i}#{$unit} !important;
+      }
+    }
+
+    // 负数 -m-
+    @for $i from map-get($forLength,minus) to 0 {
+      .#{$directionKey}-m#{$i}#{$unitKey} {
+        #{$direction}:#{$i}#{$unit} !important;
+      }
+    }
+  }
+}
+
+@each $value in $position-types {
+  .position-#{$value} {
+    position: $value !important;
+  }
+}
+
+@each $type in $curs-types {
+  .cursor-#{$type} {
+    cursor: #{$type} !important;
+  }
+}
+
+@each $type in $display {
+  .display-#{$type} {
+    display: $type !important;
+  }
+}
+
+@each $value in $flex-jc {
+  .justify-content-#{$value} {
+    justify-content: $value !important;
+  }
+}
+
+@each $value in $flex-ai {
+  .align-items-#{$value} {
+    align-items: $value !important;
+  }
+}
+
+// 组合 flex
+@each $jc in $flex-jc {
+  @each $ai in $flex-ai {
+    .flex-#{$jc}-#{$ai}{
+      display: flex;
+      justify-content: $jc !important;
+      align-items: $ai !important;
+    }
+  }
+}
+
+@each $val in $border-style {
+  .border-style-#{$val} {
+    border-style: $val;
+  }
+}
+
+@each $val in $word-break {
+  .word-break-#{$val} {
+    word-break: $val;
+  }
+}
+
+// 单例 css
+
+// /*overflow*/
+.overflow-hidden {
+  overflow: hidden
+}
+
+.overflow-x-auto {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.overflow-x-hidden {
+  overflow-x: hidden
+}
+
+.overflow-y-auto {
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.overflow-y-hidden {
+  overflow-y: hidden
+}
+
+
+.select-none {
+  user-select: none !important;
+}
+
+// text-align-last
+.text-last-center {
+  text-align-last: center !important;
+}
+
+.text-last-justify {
+  text-align-last: justify !important;
+}
+
+// text overflow
+.text-ellipsis {
+  display: inline-block !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+/* flex item属性 */
+.align-self-auto {
+  align-self: auto;
+}
+
+.align-self-start {
+  align-self: flex-start
+}
+
+.align-self-end {
+  align-self: flex-end
+}
+
+.align-self-center {
+  align-self: center
+}
+
+.align-self-baseline {
+  align-self: baseline
+}
+
+.align-self-stretch {
+  align-self: stretch
+}
+
+/* 组合class */
+
+.flex-between-center {
+  display: flex;
+  justify-content: space-between !important;
+  align-items: center !important;
+}
+
+.flex-around-center {
+  display: flex;
+  justify-content: space-around !important;
+  align-items: center !important;
+}
+
+
+.flex-x-center {
+  display: flex;
+  justify-content: center !important;
+}
+
+.flex-y-center {
+  display: flex;
+  align-items: center !important;
+}
+
+.flex-row {
+  flex-direction: row !important;
+}
+
+.flex-row-reverse {
+  flex-direction: row-reverse !important;
+}
+
+.flex-column {
+  flex-direction: column !important;
+}
+
+.flex-column-reverse {
+  flex-direction: column-reverse
+}
+
+.flex-row {
+  flex-direction: row !important;
+}
+
+.flex-wrap {
+  flex-wrap: wrap !important;
+}
+
+.text-under {
+  text-decoration: underline !important;
+}
+
+.circle {
+  border-radius: 50%;
+}
+
+// 缺省页 table 重置
+ .ant-table-placeholder {
+    border-bottom: 0;
+  }

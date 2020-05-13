@@ -1,0 +1,143 @@
+@charset "utf-8";
+// 日常开发 打包发布 环境变量
+$forLength: (normal:1001,
+  percent: 101,
+  minus:-201,
+);
+
+// 提示工具使用 详见 README.md
+
+// $forLength: (normal:2,
+//   percent: 2,
+//   minus:-2,
+// );
+$colors: ('red':#ff0000,
+  'white':#fff,
+  'black':#000,
+  'blue':#1890ff,
+  'e6e6e6':#e6e6e6,
+  'transparent':transparent,
+);
+// 枚举 just-content demo
+// just-content-center just-content-flex-end
+$flex-jc: auto,
+flex-start,
+flex-end,
+center,
+space-between,
+space-around;
+// 枚举 align-items 同上
+$flex-ai: auto,
+flex-start,
+flex-end,
+center,
+stretch;
+// demo display-flex
+$display:none,
+inline,
+block,
+inline-block,
+flex;
+
+// margin padding 枚举
+$spacing-types: (m: margin,
+  p: padding,
+);
+// 方向枚举
+/**
+使用方式
+m-t-20 margin-top:20px
+m-y-20 margin-top:20px margin-bottom:20px
+p-20 padding:20px
+p-20vh padding:20vh
+p-l-20p padding-left:20%
+x y 为 左右 上下 同时
+**/
+$spacing-directions: (t: top,
+  r: right,
+  b: bottom,
+  l: left,
+);
+// 定位方式枚举  demo position-fixed
+$position-types:static,
+relative,
+sticky,
+unset,
+absolute,
+fixed;
+
+// 类型枚举 默认值为px
+/**
+demo
+w-20 width:20px
+h-20vh height:20vh
+可用于大部分 有单位数值
+**/
+$unit-types:(null:px,
+  p:'%',
+  vh:vh,
+  vw:vw,
+  em:em,
+  rem:rem,
+);
+
+// 鼠标类型 枚举 cursor-pointer
+
+$curs-types: auto,
+default,
+none,
+context-menu,
+help,
+pointer,
+progress,
+wait,
+cell,
+crosshair,
+text,
+vertical-text,
+alias,
+copy,
+move,
+no-drop,
+not-allowed,
+e-resize,
+n-resize,
+ne-resize,
+nw-resize,
+s-resize,
+se-resize,
+sw-resize,
+w-resize,
+ew-resize,
+ns-resize,
+nesw-resize,
+nwse-resize,
+col-resize,
+row-resize,
+all-scroll,
+zoom-in,
+zoom-out,
+grab,
+grabbing;
+
+// 枚举 边框样式
+
+$border-style:none,
+hidden,
+dotted,
+dashed,
+solid,
+double,
+groove,
+ridge,
+inset,
+outset,
+inherit;
+
+$word-break:normal,
+break-all,
+keep-all,
+break-word,
+inherit,
+initial,
+unset;
