@@ -1,41 +1,56 @@
 <template>
-  <div class="home p-24">
-    <!--<a-form-->
-    <!--layout="inline"-->
-    <!--class="searchForm m-b-16"-->
-    <!--:form="form"-->
-    <!--&gt;-->
-    <!--<a-form-item label="搜索1" colon class="m-b-16">-->
-    <!--<a-input v-decorator="formRules.ss1" placeholder="请输入" class="w-17vw" />-->
-    <!--</a-form-item>-->
-    <!--<a-form-item label="搜索2" colon class="m-b-16">-->
-    <!--<a-input v-decorator="formRules.ss2" placeholder="请输入" class="w-17vw" />-->
-    <!--</a-form-item>-->
-    <!--<a-form-item label="搜索3" colon class="m-b-16">-->
-    <!--<a-input v-decorator="formRules.ss3" placeholder="请输入" class="w-17vw" />-->
-    <!--</a-form-item>-->
-    <!--<a-form-item label="搜索4" colon class="m-b-16">-->
-    <!--<a-input v-decorator="formRules.ss4" placeholder="请输入" class="w-17vw" />-->
-    <!--</a-form-item>-->
-    <!--<a-form-item label="搜索5" colon class="m-b-16">-->
-    <!--<a-date-picker v-decorator="formRules.ss5" class="w-100p" />-->
-    <!--</a-form-item>-->
-    <!--<a-form-item>-->
-    <!--<a-button type="primary" :loading="loadingTable" @click="getTableData">-->
-    <!--查 询-->
-    <!--</a-button>-->
-    <!--<a-button :loading="loadingTable" @click="resetTable">-->
-    <!--重 置-->
-    <!--</a-button>-->
-    <!--</a-form-item>-->
-    <!--</a-form>-->
-    <!--<a-table-->
-    <!--:columns="columns"-->
-    <!--:data-source="tableData"-->
-    <!--:loading="loadingTable"-->
-    <!--:pagination="pagination"-->
-    <!--@change="change"-->
-    <!--/>-->
+  <div class="home p-24 w-100p">
+    <el-form :inline="true" :model="formInline" class="demo-form-inline">
+      <el-form-item label="审批人">
+        <el-input v-model="formInline.user" placeholder="审批人" />
+      </el-form-item>
+      <el-form-item label="活动区域">
+        <el-select v-model="formInline.region" placeholder="活动区域">
+          <el-option label="区域一" value="shanghai" />
+          <el-option label="区域二" value="beijing" />
+        </el-select>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="getTableData">查询</el-button>
+      </el-form-item>
+    </el-form>
+    <el-table
+      v-loading="loadingTable"
+      border
+      :data="tableData"
+      style="width: 100%"
+    >
+      <el-table-column v-for="item of cols" :key="item.id" v-bind="item" />
+      <!--<el-table-column-->
+      <!--prop="key"-->
+      <!--label="日期"-->
+      <!--width="180"-->
+      <!--/>-->
+      <!--<el-table-column-->
+      <!--prop="name"-->
+      <!--label="日期"-->
+      <!--width="180"-->
+      <!--/>-->
+      <!--<el-table-column-->
+      <!--prop="age"-->
+      <!--label="姓名"-->
+      <!--width="180"-->
+      <!--/>-->
+      <!--<el-table-column-->
+      <!--prop="address"-->
+      <!--label="地址"-->
+      <!--/>-->
+    </el-table>
+    <el-pagination
+      class="text-right m-t-16"
+      :current-page.sync="pages.pageNum"
+      :page-sizes="[100, 200, 300, 400]"
+      :page-size.sync="pages.pageSize"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="400"
+      @size-change="sizeChange"
+      @current-change="getTableData"
+    />
   </div>
 </template>
 
@@ -45,7 +60,7 @@ import { loading, debounceFnStart } from '@/decorator'
 import { getDictList } from '@/dicts'
 import { uuid } from '../utils'
 
-function mockData ({ pageSize }) {
+function mockData (pageSize) {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       resolve(new Array(pageSize).fill(1).map(x => ({
@@ -63,38 +78,54 @@ export default {
   name: 'Home',
   data () {
     return {
-      // form: this.$form.createForm(this),
-      // formRules: mapDecorator([
-      //   ['ss1'],
-      //   ['ss2'],
-      //   ['ss3'],
-      //   ['ss4'],
-      //   ['ss5']
-      // ]),
+      pages: {
+        pageSize: 10,
+        pageNum: 1
+      },
+      formInline: {
+        user: '',
+        region: ''
+      },
+      cols: [{
+        prop: 'name',
+        label: '日期',
+        width: '180'
+      },
+      {
+        prop: 'age',
+        label: '姓名'
+      }
+      ],
       loadingTable: false,
-      columns: [{ title: 'name', dataIndex: 'name', key: 'name', sorter: true }, { title: 'Age', dataIndex: 'age', key: 'age' }, { title: 'Address', dataIndex: 'address', key: 'address' }, { title: 'Tags', key: 'tags', dataIndex: 'tags' }],
       tableData: []
       // pagination: paginTool(this.getTableData.bind(this))
     }
   },
   created () {
     console.log('获取字典', getDictList('type'))
+    this.getTableData()
   },
   methods: {
-    @debounceFnStart()
-    @loading('loadingTable')
+      @debounceFnStart()
+        @loading('loadingTable')
     async getTableData () {
-      const formValues = await this.form.validateFields()
-      const params = { ...formValues, ...this.pagination.getValues() }
-      console.log('传给后端的数据', JSON.stringify(params, null, '\t'))
-      this.tableData = await mockData(params)
-      this.pagination.setTotal(200)
+      // const formValues = await this.form.validateFields()
+      // const params = { ...formValues, ...this.pagination.getValues() }
+      // console.log('传给后端的数据', JSON.stringify(params, null, '\t'))
+      console.log(JSON.stringify(this.formInline, null, 4))
+      console.log(JSON.stringify(this.pages, null, 2))
+
+      this.tableData = await mockData(10)
+      // this.pagination.setTotal(200)
     },
     resetTable () {
       this.form.resetFields()
       this.pagination.initData()
     },
-    change (...args) { this.pagination.change(...args) }
+    sizeChange () {
+      this.pages.pageNum = 1
+      this.getTableData()
+    }
   }
 }
 </script>

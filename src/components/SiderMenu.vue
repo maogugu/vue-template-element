@@ -3,9 +3,13 @@
     default-active="1"
     class="el-menu-vertical-demo h-100p "
     :router="true"
+    background-color="#545c64"
+    text-color="#fff"
+    active-text-color="#ffd04b"
+    :collapse="isCollapse"
   >
-    <div class="logo bg-white m-16 h-32">
-      <p class="lh-32 text-center text-red-45 fs-24">此处是logo</p>
+    <div class="logo m-16 h-32">
+      <p class="lh-32 text-center text-white fs-24">管理平台</p>
     </div>
     <el-submenu index="base">
       <template slot="title">
@@ -29,10 +33,22 @@
 <script>
 export default {
   name: 'SiderMenu',
+  props: {
+    isCollapse: {
+      type: Boolean,
+      default: true
+    }
+  },
   methods: {
 
   }
 }
 </script>
 <style scoped lang="scss">
+  .demo-block.demo-menu .el-menu-vertical-demo:not(.el-menu--collapse) {
+    width: 240px;
+  }
+  .el-menu--collapse {
+    width: 64px;
+  }
 </style>
