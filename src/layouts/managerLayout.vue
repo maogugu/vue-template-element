@@ -12,7 +12,7 @@
         />
         <span>欢迎您，admin</span>
       </el-header>
-      <breadcrumb :route="$route" />
+      <breadcrumb />
       <el-main class="bg-f0f2f5">
         <el-container class="bg-white">
           <router-view />
