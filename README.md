@@ -146,155 +146,201 @@
      编写文件时 应维护声明文件 (.d.ts)
   ```
 
-  + utils/index.js 
-    + 此文件应该为纯函数组件
-    + 此文件导出的函数应该在任意环境下通用
-    + 此文件导出的函数 尽量遵循数据不可变原则 不改变source data 而是返回一个新的 data
-  + validate.js
-    + 此文件是正则表达式类库
-    + 此文件内正则应可维护 (业务正则可直接写入代码 不具备可重用性)
-    + 此文件内除导出正则外也应导出一份校验函数 
-  + ddApi.js
-    + 此文件为你添加鉴权参数仅此而已
-  + elementUtils.js
-    + 此文件是ant design for vue 二次封装函数库
-    + 修改此函数库 应保证不影响现有代码
-    + 具体说明请看elementUtils.d.ts
++ utils/index.js 
+```text
++ 此文件应该为纯函数组件
++ 此文件导出的函数应该在任意环境下通用
++ 此文件导出的函数 尽量遵循数据不可变原则 不改变source data 而是返回一个新的 data
+```
+    
++ validate.js
+```text
++ 此文件是正则表达式类库
++ 此文件内正则应可维护 (业务正则可直接写入代码 不具备可重用性)
++ 此文件内除导出正则外也应导出一份校验函数 
+```
+
++ ddApi.js
+```text
++ 此文件为你添加鉴权参数仅此而已
+```
+
++ elementUtils.js
+```text
++ 此文件是ant design for vue 二次封装函数库
++ 修改此函数库 应保证不影响现有代码
++ 具体说明请看elementUtils.d.ts
+```
+
     
 
 ### 9. webpack优化配置介绍
 
-  + 目录
-    + 配置全局cdn，包含js、css
-    + 开启Gzip压缩，包含文件js、css
-    + 去除生产环境console
-    + 本地代理
-    + 配置别名
-    + 配置环境变量开发模式、测试模式、生产模式
-    + 开启分析打包日志
-  
-  + 配置全局cdn，包含js、css 配置
-  
-    + vue.config.js
-    
-    ```
-      // cdn预加载使用
-      const externals = {
-          vue: 'Vue',
-          moment: 'moment',
-          'vue-router': 'VueRouter',
-          vuex: 'Vuex',
-          vant: 'vant',
-          axios: 'axios',
-          'lodash-es': '_',
-          'dingtalk-jsapi': 'dd'
-      }
-      // 基础注入
-      const cdn = { // 将会注入index.html js 顺序不可乱 注意版本
-        css: [
-        ],
-        js: [
-          'https://g.alicdn.com/dingding/dingtalk-jsapi/2.8.33/dingtalk.open.js',
-          'https://xfw-bscnym-test.oss-cn-hangzhou.aliyuncs.com/static/js/vue.min.js',
-          'https://xfw-bscnym-test.oss-cn-hangzhou.aliyuncs.com/static/js/vue-router.min.js',
-          'https://xfw-bscnym-test.oss-cn-hangzhou.aliyuncs.com/static/js/vuex.min.js',
-          'https://xfw-bscnym-test.oss-cn-hangzhou.aliyuncs.com/static/js/axios.min.js',
-          'https://xfw-bscnym-test.oss-cn-hangzhou.aliyuncs.com/static/js/moment.min.js',
-          'https://xfw-bscnym-test.oss-cn-hangzhou.aliyuncs.com/static/js/moment-zh-cn.js',
-          'https://xfw-bscnym-test.oss-cn-hangzhou.aliyuncs.com/static/js/lodash.min.js',
-          'https://cdn.jsdelivr.net/npm/vant@2.6/lib/vant.min.js'
-        ]
-      }
-      // 预加载 依赖变量
-      config.merge({
-        externals: externals
-      })
-      
-    ```
-    + html模板配置cdn
-    
-    ```
-      // DNS预解析 提升加载效率
-      <link rel="dns-prefetch" href="xfw-bscnym-test.oss-cn-hangzhou.aliyuncs.com" />
-      // 动态加载 cdn 静态资源
-      <% if (htmlWebpackPlugin.options.buildInfo.env === 'production') { %>
-      <% for (let link of htmlWebpackPlugin.options.cdn.css) { %>
-      <link rel="stylesheet" href="<%= link %>"><% } %>
-      <% for (let src of htmlWebpackPlugin.options.cdn.js) { %><script src="<%= src %>"></script><% } %>
-      <% } %>        
-    
-    ```
+#### 目录
+```text
++ 配置全局cdn，包含js、css
++ 开启Gzip压缩，包含文件js、css
++ 去除生产环境console
++ 本地代理
++ 配置别名
++ 配置环境变量开发模式、测试模式、生产模式
++ 开启分析打包日志
++ 配置打包版本/环境/时间（控制台打印）
 
-    + 开启Gzip压缩，包含文件js、css
+```
+  
+#### 配置全局cdn，包含js、css 配置
+  
++ vue.config.js
     
-    ``` 
-        // 默认开启gzip
-        config
-        .plugin('CompressionPlugin')
-        .use(CompressionPlugin)
-        .end()
-    ```
+```javascript
+  // cdn预加载使用
+  const externals = {
+      vue: 'Vue',
+      moment: 'moment',
+      'vue-router': 'VueRouter',
+      vuex: 'Vuex',
+      vant: 'vant',
+      axios: 'axios',
+      'lodash-es': '_',
+      'dingtalk-jsapi': 'dd'
+  }
+  // 基础注入
+  const cdn = { // 将会注入index.html js 顺序不可乱 注意版本
+    css: [
+    ],
+    js: [
+      'https://g.alicdn.com/dingding/dingtalk-jsapi/2.8.33/dingtalk.open.js',
+      'https://xfw-bscnym-test.oss-cn-hangzhou.aliyuncs.com/static/js/vue.min.js',
+      'https://xfw-bscnym-test.oss-cn-hangzhou.aliyuncs.com/static/js/vue-router.min.js',
+      'https://xfw-bscnym-test.oss-cn-hangzhou.aliyuncs.com/static/js/vuex.min.js',
+      'https://xfw-bscnym-test.oss-cn-hangzhou.aliyuncs.com/static/js/axios.min.js',
+      'https://xfw-bscnym-test.oss-cn-hangzhou.aliyuncs.com/static/js/moment.min.js',
+      'https://xfw-bscnym-test.oss-cn-hangzhou.aliyuncs.com/static/js/moment-zh-cn.js',
+      'https://xfw-bscnym-test.oss-cn-hangzhou.aliyuncs.com/static/js/lodash.min.js',
+      'https://cdn.jsdelivr.net/npm/vant@2.6/lib/vant.min.js'
+    ]
+  }
+  // 预加载 依赖变量
+  config.merge({
+    externals: externals
+  })
+  
+```
+#### html模板配置cdn
     
-    + 去除生产环境console
+```html
+  // DNS预解析 提升加载效率
+  <link rel="dns-prefetch" href="xfw-bscnym-test.oss-cn-hangzhou.aliyuncs.com" />
+  // 动态加载 cdn 静态资源
+  <% if (htmlWebpackPlugin.options.buildInfo.env === 'production') { %>
+  <% for (let link of htmlWebpackPlugin.options.cdn.css) { %>
+  <link rel="stylesheet" href="<%= link %>"><% } %>
+  <% for (let src of htmlWebpackPlugin.options.cdn.js) { %><script src="<%= src %>"></script><% } %>
+  <% } %>        
+
+```
+
+#### 开启Gzip压缩，包含文件js、css
+    
+```javascript
+    // 默认开启gzip
+    config
+    .plugin('CompressionPlugin')
+    .use(CompressionPlugin)
+    .end()
+```
+    
+#### 去除生产环境console
         
-    ``` 
-      config.optimization.minimizer('terser').tap((args) => {
-        args[0].terserOptions.compress.drop_console = true // 移除 console.log
-        return args
-      })
-    ```
+```javascript
+  config.optimization.minimizer('terser').tap((args) => {
+    args[0].terserOptions.compress.drop_console = true // 移除 console.log
+    return args
+  })
+```
     
-    + 本地代理
-    ```
-    devServer: {
-        open: false, // 自动启动浏览器
-        host: '0.0.0.0', // localhost
-        port: 8080, // 端口号
-        https: false,
-        hotOnly: false, // 热更新
-        proxy: {
-            '^/sso': {
-                target: process.env.VUE_APP_SSO, // 重写路径
-                ws: false, //开启WebSocket
-                secure: false, // 如果是https接口，需要配置这个参数
-                changeOrigin: true
-            }
+#### 本地代理
+```javascript
+devServer: {
+    open: false, // 自动启动浏览器
+    host: '0.0.0.0', // localhost
+    port: 8080, // 端口号
+    https: false,
+    hotOnly: false, // 热更新
+    proxy: {
+        '^/sso': {
+            target: process.env.VUE_APP_SSO, // 重写路径
+            ws: false, //开启WebSocket
+            secure: false, // 如果是https接口，需要配置这个参数
+            changeOrigin: true
         }
     }
-    ```
+}
+```
     
-    + 配置别名
-    ```
-    config.resolve.alias
-    .set('@', resolve('src'))
-    ```
+#### 配置别名
+```javascript
+config.resolve.alias
+.set('@', resolve('src'))
+```
     
-    + 配置环境变量开发模式、测试模式、生产模式
+#### 配置环境变量开发模式、测试模式、生产模式
     
-      在根目录新建
-    
-      + env.dev
-      ```
-      NODE_ENV=development
-      ```
-      
-      + env.prod
-      ```
-      NODE_ENV=production
-      ```
-        
-      + env.test
-      ```
-      NODE_ENV=production  // 如果我们在.env.test文件中把NODE_ENV设置为test的话，那么打包出来的目录结构是有差异的
-      ```
+在根目录新建
+
++ env.dev
+```javascript
+NODE_ENV=development
+```
+
++ env.prod
+```javascript
+NODE_ENV=production
+```
+
++ env.test
+```javascript
+NODE_ENV=production //如果我们在.env.test文件中把NODE_ENV设置为test的话，那么打包出来的目录结构是有差异的
+```
    
-    + 开启分析打包日志
+#### 开启分析打包日志
     
-      安装cnpm i webpack-bundle-analyzer -D
-      ```
-        chainWebpack: config => {
-            config
-                .plugin('webpack-bundle-analyzer')
-                .use(require('webpack-bundle-analyzer').BundleAnalyzerPlugin)
-        }
-      ```
+安装cnpm i webpack-bundle-analyzer -D
+```javascript
+chainWebpack: config => {
+    config
+        .plugin('webpack-bundle-analyzer')
+        .use(require('webpack-bundle-analyzer').BundleAnalyzerPlugin)
+}
+```
+
+#### 配置打包版本/环境/时间（控制台打印）
+
++ vue.config.js
+
+```javascript
+const moment = require('moment')
+process.env.VUE_APP_Version = require('./package.json').version
+
+const buildInfo = {
+  buildTime: moment().format('YYYY-MM-DD HH:mm:ss'),
+  appVersion: require('./package.json').version,
+  env: process.env.NODE_ENV
+}
+```
+
++ index.html
+```html
+<script>
+    function consoleTag(key, value) {
+      var baseStyle = 'font-family: sans-serif;font-weight: bold;font-size: 12px;padding:5px;';
+      var keyStyle = "color:#fff;background:#000;" + baseStyle + ";border-radius:4px 0 0 4px";
+      var valueStyle = "color:#000;background:#FF9900;" + baseStyle + ";border-radius:0 4px 4px 0";
+      globalLog("%c " + key + "%c" + value + " ", keyStyle, valueStyle);
+    }
+    consoleTag('Environment', '<%= htmlWebpackPlugin.options.buildInfo.env %>')
+    consoleTag('Version', '<%= htmlWebpackPlugin.options.buildInfo.appVersion %>')
+    consoleTag('Build Date', '<%= htmlWebpackPlugin.options.buildInfo.buildTime %>')
+</script>
+```
