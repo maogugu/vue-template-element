@@ -51,4 +51,7 @@ export default {
   .el-menu--collapse {
     width: 64px;
   }
+  li.is-active{
+    background-color:rgb(64, 74, 80) !important;
+  }
 </style>
