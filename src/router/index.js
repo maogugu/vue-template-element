@@ -55,7 +55,7 @@ const routes = [
         path: 'home2',
         name: 'manager_home2',
         component: () => import('@/pages/home'),
-        meta: { title: '首页' }
+        meta: { title: '详情页面', breadcrumb: [{ name: 'manager_home', title: '首页' }] }
       }
     ]
   }

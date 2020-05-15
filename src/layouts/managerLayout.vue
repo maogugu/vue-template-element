@@ -3,7 +3,7 @@
     <el-aside :width="collapsed?'64px':'240px'">
       <sider-menu :is-collapse="collapsed" />
     </el-aside>
-    <el-container>
+    <el-main class="p-0">
       <el-header class="bg-white p-x-16 flex-between-center">
         <i
           class="fs-18 p-x-24 cursor-pointer text-hover-blue"
@@ -12,12 +12,13 @@
         />
         <span>欢迎您，admin</span>
       </el-header>
+      <breadcrumb :route="$route" />
       <el-main class="bg-f0f2f5">
         <el-container class="bg-white">
           <router-view />
         </el-container>
       </el-main>
-    </el-container>
+    </el-main>
   </el-container>
 </template>
 <script>
